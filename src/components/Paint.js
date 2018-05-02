@@ -7,6 +7,10 @@ import { Users } from './Users';
 const PaintWrapper = styled.div`
     display: flex;
     flex-direction: row;
+
+    .paint-canvas {
+        border: 1px solid #cfd8dc;
+    }
 `
 
 export const Paint = (props) => (

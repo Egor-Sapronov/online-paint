@@ -70,6 +70,7 @@ class Draw extends Component {
     render() {
         return (
             <SketchField 
+                className='paint-canvas'
                 ref={this.sketchRef}
                 forceValue={true}
                 width="600px"
