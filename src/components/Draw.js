@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
 import { SketchField, Tools } from 'react-sketch';
+import styled from 'styled-components';
+
 import { drawingsCollection, convertItemToDb, deconvertItemFromDb } from '../lib/firebase';
+
+const DrawWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const ClearButton = styled.button`
+    background-color: #ff5252;
+    color: #fff;
+    height: 30px;
+    font-weight: 600;
+    border: none;
+`;
 
 class Draw extends Component { 
     constructor(props) {
@@ -12,6 +27,8 @@ class Draw extends Component {
         }
 
         this.itemsCount = 0;
+
+        this.drawsUnsubscribe = null
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -19,7 +36,7 @@ class Draw extends Component {
     }
 
     componentDidMount() {
-        drawingsCollection
+        this.drawsUnsubscribe = drawingsCollection
             .onSnapshot((snap) => {
                 const addedItems = snap.docChanges.filter((change) => change.type === 'added');
 
@@ -38,6 +55,10 @@ class Draw extends Component {
                     });
                 }
             });
+    }
+
+    componentWillUnmount() {
+        this.drawsUnsubscribe();
     }
 
     getItems = (state) => {
@@ -67,19 +88,28 @@ class Draw extends Component {
         }
     }
 
+    onClear = () => {
+        Object.keys(this.state).forEach((key) => {
+            drawingsCollection.doc(key).delete();
+        });
+    }
+
     render() {
         return (
-            <SketchField 
-                className='paint-canvas'
-                ref={this.sketchRef}
-                forceValue={true}
-                width="600px"
-                height="300px"
-                onChange={this.onSketchChange}
-                value={this.getItems(this.state)}
-                tool={Tools.Pencil} 
-                lineColor={this.props.user.color}
-                lineWidth={3}/>
+            <DrawWrapper>
+                <SketchField 
+                    className='paint-canvas'
+                    ref={this.sketchRef}
+                    forceValue={true}
+                    width="600px"
+                    height="300px"
+                    onChange={this.onSketchChange}
+                    value={this.getItems(this.state)}
+                    tool={Tools.Pencil} 
+                    lineColor={this.props.user.color}
+                    lineWidth={3}/>
+                <ClearButton onClick={this.onClear}>Clear</ClearButton>
+            </DrawWrapper>
         )
      }
 }

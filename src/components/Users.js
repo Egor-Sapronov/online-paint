@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { usersCollection } from '../lib/firebase';
 
 const ScrollWrapper = styled.div`
-    height: 300px;
+    height: 331px;
     overflow: scroll;
 `
 
