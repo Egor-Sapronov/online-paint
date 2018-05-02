@@ -11,6 +11,7 @@ const UsersWrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0 10px;
+    width: 200px;
 `;
 
 const UserListItemWrapper = styled.div`
@@ -20,6 +21,11 @@ const UserListItemWrapper = styled.div`
 
     p {
         margin: 0;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
+        text-align: left;
     }
 
     padding-bottom: 10px;
